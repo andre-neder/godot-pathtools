@@ -3,7 +3,7 @@ extends Path3D
 ## Distribute a mesh along a path using MultiMeshInstance3D
 
 var is_dirty = false
-var multiMeshInstance: MultiMeshInstance3D;
+var multi_mesh_instance: MultiMeshInstance3D;
 
 @export var instance_distance = 1.0 :
   set(value):
@@ -12,17 +12,17 @@ var multiMeshInstance: MultiMeshInstance3D;
 
 @export var mesh: Mesh:
   set(value):
-    multiMeshInstance.multimesh.mesh = value
+    multi_mesh_instance.multimesh.mesh = value
     is_dirty = true
   get():
-    return multiMeshInstance.multimesh.mesh
+    return multi_mesh_instance.multimesh.mesh
 
 func _enter_tree() -> void:
-    multiMeshInstance = MultiMeshInstance3D.new()
-    multiMeshInstance.multimesh = MultiMesh.new()
-    multiMeshInstance.multimesh.transform_format = MultiMesh.TRANSFORM_3D
+    multi_mesh_instance = MultiMeshInstance3D.new()
+    multi_mesh_instance.multimesh = MultiMesh.new()
+    multi_mesh_instance.multimesh.transform_format = MultiMesh.TRANSFORM_3D
     connect("curve_changed", _on_curve_changed)
-    add_child(multiMeshInstance, false, 1)
+    add_child(multi_mesh_instance, false, 1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
@@ -36,7 +36,7 @@ func _update_multimesh():
   
   var count: int = floor(path_length / instance_distance)
 
-  multiMeshInstance.multimesh.instance_count = count
+  multi_mesh_instance.multimesh.instance_count = count
 
   var offset = instance_distance / 2.0
 
@@ -54,7 +54,7 @@ func _update_multimesh():
     segment_basis.z = -forward
 
     var transf = Transform3D(segment_basis, segment_position)
-    multiMeshInstance.multimesh.set_instance_transform(i, transf)
+    multi_mesh_instance.multimesh.set_instance_transform(i, transf)
 
 func _on_curve_changed() -> void:
   print("curve changed")
